@@ -51,7 +51,7 @@ jobs:
 
       - name: Freeze DoElvUIClient
         run: |
-          pyinstaller --log-level INFO --onefile --name DoElvUIClient --clean DoElvUIClient.py --distpath freeze
+          pyinstaller --log-level INFO --onefile --noconsole --name DoElvUIClient --clean DoElvUIClient.py --distpath freeze
 
       - name: Make DoElvUIClient Installer
         run: |
