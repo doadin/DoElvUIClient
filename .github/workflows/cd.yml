@@ -62,3 +62,9 @@ jobs:
           name: DoElvUIClient-py${{ matrix.python }}-${{ matrix.arch }}
           path: |
               ${{ github.workspace }}/*.exe
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ github.workspace }}/*.exe
