@@ -16,7 +16,7 @@ jobs:
     if: (github.event_name != 'pull_request' || contains(github.event.pull_request.labels.*.name, 'package'))
     strategy:
       matrix:
-        arch: [x64, x86]
+        arch: [x64]
         python: ["3.10"]
 
     steps:
@@ -31,7 +31,6 @@ jobs:
         with:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
-          path: src
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -48,6 +47,7 @@ jobs:
           python -m pip install
           pyinstaller==4.10
           beautifulsoup4
+          requests
 
       - name: Freeze DoElvUIClient
         run: |
@@ -60,4 +60,5 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: DoElvUIClient-py${{ matrix.python }}-${{ matrix.arch }}
-          path: /*.exe
+          path: |
+              ${{ github.workspace }}/*.exe

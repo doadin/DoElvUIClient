@@ -1,5 +1,5 @@
 # Script version; displayed when running the installer
-!define DoElvUIClient_INSTALLER_VERSION "2.0"
+!define DoElvUIClient_INSTALLER_VERSION "1.0"
 
 # Deluge program information
 !define PROGRAM_NAME "DoElvUIClient"
@@ -9,7 +9,7 @@
    !error "Program Version Undefined"
 !endif
 !define PROGRAM_WEB_SITE "https://github.com/doadin/DoElvUIClient"
-!define LICENSE_FILEPATH "..\..\LICENSE"
+#!define LICENSE_FILEPATH "..\..\LICENSE"
 
 !include FileFunc.nsh
 
@@ -31,11 +31,8 @@ SetCompressorDictSize 64
 # Modern User Interface 2
 !include MUI2.nsh
 # Installer
-!define MUI_ICON "..\..\deluge\ui\data\pixmaps\deluge.ico"
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_HEADERIMAGE_BITMAP "installer-top.bmp"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "installer-side.bmp"
 !define MUI_COMPONENTSPAGE_SMALLDESC
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_ABORTWARNING
@@ -46,8 +43,6 @@ SetCompressorDictSize 64
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
 # Uninstaller
 !define MUI_UNICON "${NSISDIR}\Contrib\Graphics\Icons\modern-uninstall.ico"
-!define MUI_HEADERIMAGE_UNBITMAP "installer-top.bmp"
-!define MUI_WELCOMEFINISHPAGE_UNBITMAP "installer-side.bmp"
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 !define MUI_FINISHPAGE_SHOWREADME ""
@@ -59,7 +54,7 @@ SetCompressorDictSize 64
 Var StartMenuFolder
 # Welcome, License & Components pages
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE ${LICENSE_FILEPATH}
+#!insertmacro MUI_PAGE_LICENSE ${LICENSE_FILEPATH}
 !insertmacro MUI_PAGE_COMPONENTS
 # Let the user select the installation directory
 !insertmacro MUI_PAGE_DIRECTORY
@@ -123,13 +118,13 @@ ShowInstDetails show
 ShowUnInstDetails show
 
 # Install main application
-Section "DoElvUIClient Bittorrent Client" Section1
+Section "DoElvUIClient" Section1
     SectionIn RO
     !include "install_files.nsh"
 
     SetOverwrite ifnewer
     SetOutPath "$INSTDIR"
-    File ${LICENSE_FILEPATH}
+    #File ${LICENSE_FILEPATH}
     WriteIniStr "$INSTDIR\homepage.url" "InternetShortcut" "URL" "${PROGRAM_WEB_SITE}"
 
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
@@ -176,7 +171,6 @@ Section Uninstall
 
     # Delete registry keys.
     DeleteRegKey ${PROGRAM_UNINST_ROOT_KEY} "${PROGRAM_UNINST_KEY}"
-    DoElvUIClient_skip_delete:
     # This key is only used by DoElvUIClient, so we should always delete it
     DeleteRegKey HKCR "DoElvUIClient"
 SectionEnd

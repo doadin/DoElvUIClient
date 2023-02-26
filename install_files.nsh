@@ -1,1 +1,2 @@
-freeze\DoElvUIClient.exe
+SetOutPath "$INSTDIR"
+File freeze\DoElvUIClient.exe
