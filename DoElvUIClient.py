@@ -6,7 +6,6 @@ from zipfile import ZipFile
 #import zipfile
 import tkinter as tk
 import os
-import distutils.dir_util
 import shutil
 import tempfile
 from bs4 import BeautifulSoup
@@ -75,7 +74,7 @@ def install_elvui_classic():
     #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
-        distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns')
+        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
         window.destroy()
     
         greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
@@ -104,7 +103,7 @@ def install_elvui_wrath():
     #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
-        distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWWrathDir + '\\_classic_\\Interface\\AddOns')
+        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWWrathDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
         window.destroy()
     
         greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
@@ -132,7 +131,7 @@ def install_elvui_retail():
     #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
-        distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns')
+        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
         window.destroy()
     
         greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
@@ -274,17 +273,17 @@ def run_update():
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
         if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteElvUIVersion):
-            distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns')
+            shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
     try:
       if (LocalElvUIClassicVersion and remoteElvUIVersion) and (LocalElvUIClassicVersion != remoteElvUIVersion):
-          distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns')
+          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
     try:
       if (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion):
-          distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWWrathDir + '\\_classic_\\Interface\\AddOns')
+          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWWrathDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
     shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
