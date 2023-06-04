@@ -307,16 +307,21 @@ if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteEl
     #changelogresponse = requests.get("https://api.github.com/repos/tukui-org/ElvUI/tags?per_page=1")
     #changelogresponsetext = response.text.replace("[","").replace("]","")
 
-    s = requests.get("https://www.tukui.org/download.php?ui=elvui&changelog")
-    soup = BeautifulSoup(s.content, "html.parser")
-    soupdiv = soup.find("div", id='changelog')
-    for data in soupdiv(['style', 'script']):
-        # Remove tags
-        data.decompose()
+    try:
+        s = requests.get("https://api.tukui.org/v1/changelog/elvui")
+        changelogbox.insert('1.0',s.text)
+    except:
+        text = "Changelog Unavailable"
+        changelogbox.insert('1.0',text)
+    #soup = BeautifulSoup(s.content, "html.parser")
+    #soupdiv = soup.find("div", id='changelog')
+    #for data in soupdiv(['style', 'script']):
+    #    # Remove tags
+    #    data.decompose()
     #print(soup.find("div", id='changelog'))
     #print(' '.join(soup.stripped_strings))
     #changelogbox.insert('1.0',' '.join(soupdiv.stripped_strings))
-    changelogbox.insert('1.0',soupdiv.text)
+    
 
     changelogbox.pack(expand= 1)
 
