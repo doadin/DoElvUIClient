@@ -230,7 +230,7 @@ try:
     except NameError:
         ElvUIWrathVersionlabel = None
     #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
-    ElvUIWrathLocation = WoWWrathDir + '\_classic_\Interface\AddOns\ElvUI\ElvUI_Classic.toc'
+    ElvUIWrathLocation = WoWWrathDir + '\_classic_\Interface\AddOns\ElvUI\ElvUI_Wrath.toc'
     ElvUIWrathToC = open(ElvUIWrathLocation, 'r')
     for line in ElvUIWrathToC:
         if line.find("Version") != -1:
