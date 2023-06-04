@@ -5,6 +5,7 @@ import urllib.request
 from zipfile import ZipFile
 #import zipfile
 import tkinter as tk
+from tkinter import ttk
 import os
 import shutil
 import tempfile
@@ -16,9 +17,25 @@ remoteElvUIURL = None
 LocalElvUIClassicVersion = None
 LocalElvUIWrathVersion = None
 
+try:
+    import darkdetect
+    if darkdetect.isDark():
+        lightdarktheme = "dark"
+    if darkdetect.isLight():
+        lightdarktheme = "light"    
+except ImportError:
+    lightdarktheme = "light"
+
+try:
+    import sv_ttk
+    svtheme = True
+except ImportError:
+    svtheme = False
+#sv_ttk.set_theme(lightdarktheme)
+
 window = tk.Tk()
 title = window.title("DoElvUIUpdater")
-greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
+greeting = ttk.Label(text="Welcome to the Do ElvUI Updater")
 greeting.pack()
 
 access_registry = winreg.ConnectRegistry(None,winreg.HKEY_LOCAL_MACHINE)
@@ -58,7 +75,7 @@ if data_dict["zipball_url"]:
 if data_dict["commit"]["sha"]:
     remoteElvUISHA = data_dict["commit"]["sha"]
 
-label = tk.Label(text="Latest ElvUI Vesion: " + remoteElvUIVersion)
+label = ttk.Label(text="Latest ElvUI Vesion: " + remoteElvUIVersion)
 label.pack()
 
 tempdir = tempfile.gettempdir()
@@ -75,21 +92,28 @@ def install_elvui_classic():
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
         shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
-        window.destroy()
+        for widget in window.winfo_children():
+            widget.destroy()
     
-        greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
+        greeting = ttk.Label(text="Welcome to the Do ElvUI Updater")
         greeting.pack()
     
-        label = tk.Label(text="Classic Install Complete!")
+        label = ttk.Label(text="Classic Install Complete!")
         label.pack()
+        title = window.title("DoElvUIUpdater")
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
         window.mainloop()
         shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
         os.remove(tempdir + "\\" + remoteElvUIVersion + ".zip")
         #shutil.copytree("E:\\test\\AddOns\\tukui-org-ElvUI-" + remoteElvUISHA[0:7], "E:\\test", copy_function = shutil.copy)
     except:
-        window.destroy()
-        classicinstallerror = tk.Label(text="Classic Install Faiiled! Please report this!")
+        for widget in window.winfo_children():
+            widget.destroy()
+        classicinstallerror = ttk.Label(text="Classic Install Faiiled! Please report this!")
         classicinstallerror.pack()
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
         window.mainloop()
 
 
@@ -104,21 +128,28 @@ def install_elvui_wrath():
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
         shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWWrathDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
-        window.destroy()
+        for widget in window.winfo_children():
+            widget.destroy()
     
-        greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
+        greeting = ttk.Label(text="Welcome to the Do ElvUI Updater")
         greeting.pack()
     
-        label = tk.Label(text="Wrath Install Complete!")
+        label = ttk.Label(text="Wrath Install Complete!")
         label.pack()
+        title = window.title("DoElvUIUpdater")
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
         window.mainloop()
         shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
         os.remove(tempdir + "\\" + remoteElvUIVersion + ".zip")
         #shutil.copytree("E:\\test\\AddOns\\tukui-org-ElvUI-" + remoteElvUISHA[0:7], "E:\\test", copy_function = shutil.copy)
     except:
-        window.destroy()
-        wrathinstallerror = tk.Label(text="Wrath Install Faiiled! Please report this!")
+        for widget in window.winfo_children():
+            widget.destroy()
+        wrathinstallerror = ttk.Label(text="Wrath Install Faiiled! Please report this!")
         wrathinstallerror.pack()
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
         window.mainloop()
 
 def install_elvui_retail():
@@ -132,21 +163,28 @@ def install_elvui_retail():
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
         shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
-        window.destroy()
+        for widget in window.winfo_children():
+            widget.destroy()
     
-        greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
+        greeting = ttk.Label(text="Welcome to the Do ElvUI Updater")
         greeting.pack()
     
-        label = tk.Label(text="Retail Install Complete!")
+        label = ttk.Label(text="Retail Install Complete!")
         label.pack()
+        title = window.title("DoElvUIUpdater")
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
         window.mainloop()
         shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
         os.remove(tempdir + "\\" + remoteElvUIVersion + ".zip")
         #shutil.copytree("E:\\test\\AddOns\\tukui-org-ElvUI-" + remoteElvUISHA[0:7], "E:\\test", copy_function = shutil.copy)
     except:
-        window.destroy()
-        retailinstallerror = tk.Label(text="Retail Install Faiiled! Please report this!")
+        for widget in window.winfo_children():
+            widget.destroy()
+        retailinstallerror = ttk.Label(text="Retail Install Faiiled! Please report this!")
         retailinstallerror.pack()
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
         window.mainloop()
 
 try:
@@ -165,20 +203,17 @@ try:
         ElvUIToCVersionNumber = ElvUIToCVersionLine.partition(":")[2]
         LocalElvUIVersion = "v" + ElvUIToCVersionNumber.strip()
     
-    label = tk.Label(text="Installed Retail ElvUI Vesion: " + LocalElvUIVersion)
+    label = ttk.Label(text="Installed Retail ElvUI Vesion: " + LocalElvUIVersion)
 except:
     pass
 try: 
     label
 except NameError:
-    label = tk.Label(text="Installed Retail ElvUI Vesion: None")
+    label = ttk.Label(text="Installed Retail ElvUI Vesion: None")
     label.pack()
-    ElvUIRetailInstall = tk.Button(
+    ElvUIRetailInstall = ttk.Button(
         text="Install ElvUI To Retail",
         width=25,
-        height=1,
-        bg="green",
-        fg="white",
         command=lambda : install_elvui_retail(),
     )
     ElvUIRetailInstall.pack(after = label)
@@ -203,21 +238,18 @@ try:
         ElvUIClassicToCVersionLine = ElvUIClassicToCVersionLine.partition(":")[2]
         LocalElvUIClassicVersion = "v" + ElvUIClassicToCVersionLine.strip()
     
-    ElvUIClassicVersionlabel = tk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIClassicVersion)
+    ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIClassicVersion)
 except:
     pass
 
 try: 
     ElvUIClassicVersionlabel
 except NameError:
-    ElvUIClassicVersionlabel = tk.Label(text="Installed Classic ElvUI Vesion: None")
+    ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: None")
     ElvUIClassicVersionlabel.pack()
-    ElvUIClassicInstall = tk.Button(
+    ElvUIClassicInstall = ttk.Button(
         text="Install ElvUI To Classic",
         width=25,
-        height=1,
-        bg="green",
-        fg="white",
         command=lambda : install_elvui_classic(),
     )
     ElvUIClassicInstall.pack(after = ElvUIClassicVersionlabel)
@@ -242,20 +274,17 @@ try:
         ElvUIWrathToCVersionLine = ElvUIWrathToCVersionLine.partition(":")[2]
         LocalElvUIWrathVersion = "v" + ElvUIWrathToCVersionLine.strip()
     
-    ElvUIWrathVersionlabel = tk.Label(text="Installed Wrath ElvUI Vesion: " + LocalElvUIWrathVersion)
+    ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: " + LocalElvUIWrathVersion)
 except:
     pass
 try: 
     ElvUIWrathVersionlabel
 except NameError:
-    ElvUIWrathVersionlabel = tk.Label(text="Installed Wrath ElvUI Vesion: None")
+    ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: None")
     ElvUIWrathVersionlabel.pack()
-    ElvUIWrathInstall = tk.Button(
+    ElvUIWrathInstall = ttk.Button(
         text="Install ElvUI To Wrath",
         width=25,
-        height=1,
-        bg="green",
-        fg="white",
         command=lambda : install_elvui_wrath(),
     )
     ElvUIWrathInstall.pack(after = ElvUIWrathVersionlabel)
@@ -293,19 +322,22 @@ def run_update():
     os.remove(tempdir + "\\" + remoteElvUIVersion + ".zip")
     #shutil.copytree("E:\\test\\AddOns\\tukui-org-ElvUI-" + remoteElvUISHA[0:7], "E:\\test", copy_function = shutil.copy)
 
-    window.destroy()
+    for widget in window.winfo_children():
+            widget.destroy()
 
-    greeting = tk.Label(text="Welcome to the Do ElvUI Updater")
+    greeting = ttk.Label(text="Welcome to the Do ElvUI Updater")
     greeting.pack()
 
-    label = tk.Label(text="Update Complete!")
+    label = ttk.Label(text="Update Complete!")
     label.pack()
+    if svtheme:
+        sv_ttk.set_theme(lightdarktheme)
     window.mainloop()
 
 # LocalElvUIClassicVersion
 # LocalElvUIWrathVersion
 if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIClassicVersion and remoteElvUIVersion) and (LocalElvUIClassicVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion) and remoteElvUIURL:
-    changelogbox = tk.Text(window,width=45, height= 20,wrap="word")
+    changelogbox = ttk.Text(window,width=45, height= 20,wrap="word")
     #changelogresponse = requests.get("https://api.github.com/repos/tukui-org/ElvUI/tags?per_page=1")
     #changelogresponsetext = response.text.replace("[","").replace("]","")
 
@@ -327,17 +359,16 @@ if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteEl
 
     changelogbox.pack(expand= 1)
 
-    button = tk.Button(
+    button = ttk.Button(
         text="Update",
         width=25,
-        height=5,
-        bg="red",
-        fg="white",
         command=run_update,
     )
     button.pack()
 else:
-    label = tk.Label(text="You Are Up to Date!")
+    label = ttk.Label(text="You Are Up to Date!")
     label.pack()
 
+if svtheme:
+    sv_ttk.set_theme(lightdarktheme)
 window.mainloop()
