@@ -1,5 +1,5 @@
 # Script version; displayed when running the installer
-!define DoElvUIClient_INSTALLER_VERSION "1.0"
+!define DoElvUIClient_INSTALLER_VERSION "2.1"
 
 # Deluge program information
 !define PROGRAM_NAME "DoElvUIClient"
