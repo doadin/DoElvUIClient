@@ -337,7 +337,7 @@ def run_update():
 # LocalElvUIClassicVersion
 # LocalElvUIWrathVersion
 if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIClassicVersion and remoteElvUIVersion) and (LocalElvUIClassicVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion) and remoteElvUIURL:
-    changelogbox = ttk.Text(window,width=45, height= 20,wrap="word")
+    changelogbox = tk.Text(window,width=45, height= 20,wrap="word")
     #changelogresponse = requests.get("https://api.github.com/repos/tukui-org/ElvUI/tags?per_page=1")
     #changelogresponsetext = response.text.replace("[","").replace("]","")
 
