@@ -172,6 +172,7 @@ try:
     label
 except NameError:
     label = tk.Label(text="Installed Retail ElvUI Vesion: None")
+    label.pack()
     ElvUIRetailInstall = tk.Button(
         text="Install ElvUI To Retail",
         width=25,
@@ -180,7 +181,7 @@ except NameError:
         fg="white",
         command=lambda : install_elvui_retail(),
     )
-    ElvUIRetailInstall.pack()
+    ElvUIRetailInstall.pack(after = label)
 try:
     label.pack()
 except:
@@ -210,6 +211,7 @@ try:
     ElvUIClassicVersionlabel
 except NameError:
     ElvUIClassicVersionlabel = tk.Label(text="Installed Classic ElvUI Vesion: None")
+    ElvUIClassicVersionlabel.pack()
     ElvUIClassicInstall = tk.Button(
         text="Install ElvUI To Classic",
         width=25,
@@ -218,7 +220,7 @@ except NameError:
         fg="white",
         command=lambda : install_elvui_classic(),
     )
-    ElvUIClassicInstall.pack()
+    ElvUIClassicInstall.pack(after = ElvUIClassicVersionlabel)
 try:
     ElvUIClassicVersionlabel.pack()
 except:
@@ -247,6 +249,7 @@ try:
     ElvUIWrathVersionlabel
 except NameError:
     ElvUIWrathVersionlabel = tk.Label(text="Installed Wrath ElvUI Vesion: None")
+    ElvUIWrathVersionlabel.pack()
     ElvUIWrathInstall = tk.Button(
         text="Install ElvUI To Wrath",
         width=25,
@@ -255,7 +258,7 @@ except NameError:
         fg="white",
         command=lambda : install_elvui_wrath(),
     )
-    ElvUIWrathInstall.pack()
+    ElvUIWrathInstall.pack(after = ElvUIWrathVersionlabel)
 try:
     ElvUIWrathVersionlabel.pack()
 except:
