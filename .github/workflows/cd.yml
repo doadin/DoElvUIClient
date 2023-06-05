@@ -56,9 +56,9 @@ jobs:
       - name: Find Version
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          $DoElvUIClientVersion = ${{  github.ref_name }}
+          $DoElvUIClientVersion = 'build_version = "${{  github.ref_name }}"'
           $DoElvUIClientVersion > ${{ github.workspace }}\VERSION.tmp
-          Get-Content -Path ${{ github.workspace }}\VERSION.tmp
+          Get-Content -Path ${{ github.workspace }}\VERSION.tmp | echo
 
       - name: Freeze DoElvUIClient
         if: startsWith(github.ref, 'refs/tags/')
