@@ -58,7 +58,7 @@ jobs:
         run: |
           makensis /Darch=${{ matrix.arch }} DoElvUIClient-win-installer.nsi
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: DoElvUIClient-py${{ matrix.python }}-${{ matrix.arch }}
           path: |
@@ -68,4 +68,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
+          files: \*.exe
+          files: \*\*.exe
           files: ${{ github.workspace }}\*.exe
+          files: ${{ github.workspace }}\*\*.exe
