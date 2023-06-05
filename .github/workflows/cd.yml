@@ -63,7 +63,7 @@ jobs:
       - name: Freeze DoElvUIClient
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          pyinstaller --log-level INFO --onefile --noconsole --name DoElvUIClient --clean DoElvUIClient.py --distpath freeze
+          pyinstaller --log-level INFO --onefile --collect-data sv_ttk --noconsole --name DoElvUIClient --clean DoElvUIClient.py --distpath freeze
 
       - name: Make DoElvUIClient Installer
         if: startsWith(github.ref, 'refs/tags/')
