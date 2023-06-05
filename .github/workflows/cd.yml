@@ -51,6 +51,7 @@ jobs:
           pyinstaller==4.10
           beautifulsoup4
           requests
+          darkdetect
           sv-ttk
 
       - name: Find Version
