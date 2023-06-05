@@ -131,7 +131,6 @@ Section "DoElvUIClient" Section1
         SetShellVarContext all
         CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
         CreateShortCut "$SMPROGRAMS\$StartMenuFolder\DoElvUIClient.lnk" "$INSTDIR\DoElvUIClient.exe"
-        CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Website.lnk" "$INSTDIR\homepage.url"
         CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall DoElvUIClient.lnk" ${PROGRAM_UNINST_FILENAME}
     !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd
@@ -163,7 +162,6 @@ Section Uninstall
         SetShellVarContext all
         Delete "$SMPROGRAMS\$StartMenuFolder\DoElvUIClient.lnk"
         Delete "$SMPROGRAMS\$StartMenuFolder\Uninstall DoElvUIClient.lnk"
-        Delete "$SMPROGRAMS\$StartMenuFolder\DoElvUIClient Website.lnk"
         RmDir "$SMPROGRAMS\$StartMenuFolder"
         DeleteRegKey /ifempty HKCR "Software\DoElvUIClient"
 
