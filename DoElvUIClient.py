@@ -9,7 +9,7 @@ from tkinter import ttk
 import os
 import shutil
 import tempfile
-from bs4 import BeautifulSoup
+#from bs4 import BeautifulSoup
 import winreg
 LocalElvUIVersion = None
 remoteElvUIVersion = None
@@ -43,21 +43,27 @@ access_registry = winreg.ConnectRegistry(None,winreg.HKEY_LOCAL_MACHINE)
 #Uninstall\World of Warcraft + \_retail_\= Retail
 #Uninstall\World of Warcraft Classic Era + \_classic_era_\ = Classic Install Location
 #Uninstall\Wrath of the Lich King Classic + \_classic_\ = Wrath
+RetailFound = True
+ClassicFound = True
+WrathFound = True
 
 try:
     access_key = winreg.OpenKey(access_registry, r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\World of Warcraft")
     WoWDir = winreg.QueryValueEx(access_key, 'InstallLocation')[0]
 except:
+    RetailFound = False
     pass
 try:
     access_key = winreg.OpenKey(access_registry, r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\World of Warcraft Classic Era")
     WoWClassicDir = winreg.QueryValueEx(access_key, 'InstallLocation')[0]
 except:
+    ClassicFound = False
     pass
 try:
     access_key = winreg.OpenKey(access_registry, r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Wrath of the Lich King Classic")
     WoWWrathDir = winreg.QueryValueEx(access_key, 'InstallLocation')[0]
 except:
+    WrathFound = False
     pass
 
 #result = subprocess.run(['git', 'rev-list', '--tags', '--max-count=1'], stdout=subprocess.PIPE)
@@ -187,111 +193,118 @@ def install_elvui_retail():
             sv_ttk.set_theme(lightdarktheme)
         window.mainloop()
 
-try:
+#Retail
+if RetailFound:
     try:
-        WoWDir
+        try:
+            WoWDir
+        except NameError:
+            pass
+        #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
+        ElvUILocation = WoWDir + '\_retail_\Interface\AddOns\ElvUI\ElvUI_Mainline.toc'
+        ElvUIToC = open(ElvUILocation, 'r')
+        for line in ElvUIToC:
+            if line.find("Version") != -1:
+               ElvUIToCVersionLine = line
+        ElvUIToC.close()
+        if ElvUIToCVersionLine:
+            ElvUIToCVersionNumber = ElvUIToCVersionLine.partition(":")[2]
+            LocalElvUIVersion = "v" + ElvUIToCVersionNumber.strip()
+        
+        ElvUIRetailVersionlabel = ttk.Label(text="Installed Retail ElvUI Vesion: " + LocalElvUIVersion)
+    except Exception as e:
+        print(e)
+        pass
+    try: 
+        ElvUIRetailVersionlabel
     except NameError:
-        label = None
-    #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
-    ElvUILocation = WoWDir + '\_retail_\Interface\AddOns\ElvUI\ElvUI_Mainline.toc'
-    ElvUIToC = open(ElvUILocation, 'r')
-    for line in ElvUIToC:
-        if line.find("Version") != -1:
-           ElvUIToCVersionLine = line
-    ElvUIToC.close()
-    if ElvUIToCVersionLine:
-        ElvUIToCVersionNumber = ElvUIToCVersionLine.partition(":")[2]
-        LocalElvUIVersion = "v" + ElvUIToCVersionNumber.strip()
-    
-    label = ttk.Label(text="Installed Retail ElvUI Vesion: " + LocalElvUIVersion)
-except:
-    pass
-try: 
-    label
-except NameError:
-    label = ttk.Label(text="Installed Retail ElvUI Vesion: None")
-    label.pack()
-    ElvUIRetailInstall = ttk.Button(
-        text="Install ElvUI To Retail",
-        width=25,
-        command=lambda : install_elvui_retail(),
-    )
-    ElvUIRetailInstall.pack(after = label)
-try:
-    label.pack()
-except:
-    pass
-
-try:
+        ElvUIRetailVersionlabel = ttk.Label(text="Installed Retail ElvUI Vesion: None")
+        ElvUIRetailVersionlabel.pack()
+        ElvUIRetailInstall = ttk.Button(
+            text="Install ElvUI To Retail",
+            width=25,
+            command=lambda : install_elvui_retail(),
+        )
+        ElvUIRetailInstall.pack(after = ElvUIRetailVersionlabel)
     try:
-        WoWClassicDir
-    except NameError:
-        ElvUIClassicVersionlabel = None
-    #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
-    ElvUIClassicLocation = WoWClassicDir + '\_classic_era_\Interface\AddOns\ElvUI\ElvUI_Classic.toc'
-    ElvUIClassicToC = open(ElvUIClassicLocation, 'r')
-    for line in ElvUIClassicToC:
-        if line.find("Version") != -1:
-           ElvUIClassicToCVersionLine = line
-    ElvUIClassicToC.close()
-    if ElvUIClassicToCVersionLine:
-        ElvUIClassicToCVersionLine = ElvUIClassicToCVersionLine.partition(":")[2]
-        LocalElvUIClassicVersion = "v" + ElvUIClassicToCVersionLine.strip()
-    
-    ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIClassicVersion)
-except:
-    pass
+        ElvUIRetailVersionlabel.pack()
+    except:
+        pass
 
-try: 
-    ElvUIClassicVersionlabel
-except NameError:
-    ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: None")
-    ElvUIClassicVersionlabel.pack()
-    ElvUIClassicInstall = ttk.Button(
-        text="Install ElvUI To Classic",
-        width=25,
-        command=lambda : install_elvui_classic(),
-    )
-    ElvUIClassicInstall.pack(after = ElvUIClassicVersionlabel)
-try:
-    ElvUIClassicVersionlabel.pack()
-except:
-    pass
-
-try:
+#Classic
+if ClassicFound:
     try:
-        WoWWrathDir
-    except NameError:
-        ElvUIWrathVersionlabel = None
-    #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
-    ElvUIWrathLocation = WoWWrathDir + '\_classic_\Interface\AddOns\ElvUI\ElvUI_Wrath.toc'
-    ElvUIWrathToC = open(ElvUIWrathLocation, 'r')
-    for line in ElvUIWrathToC:
-        if line.find("Version") != -1:
-           ElvUIWrathToCVersionLine = line
-    ElvUIWrathToC.close()
-    if ElvUIWrathToCVersionLine:
-        ElvUIWrathToCVersionLine = ElvUIWrathToCVersionLine.partition(":")[2]
-        LocalElvUIWrathVersion = "v" + ElvUIWrathToCVersionLine.strip()
+        try:
+            WoWClassicDir
+        except NameError:
+            pass
+        #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
+        ElvUIClassicLocation = WoWClassicDir + '\_classic_era_\Interface\AddOns\ElvUI\ElvUI_Classic.toc'
+        ElvUIClassicToC = open(ElvUIClassicLocation, 'r')
+        for line in ElvUIClassicToC:
+            if line.find("Version") != -1:
+               ElvUIClassicToCVersionLine = line
+        ElvUIClassicToC.close()
+        if ElvUIClassicToCVersionLine:
+            ElvUIClassicToCVersionLine = ElvUIClassicToCVersionLine.partition(":")[2]
+            LocalElvUIClassicVersion = "v" + ElvUIClassicToCVersionLine.strip()
+        
+        ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIClassicVersion)
+    except:
+        pass
     
-    ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: " + LocalElvUIWrathVersion)
-except:
-    pass
-try: 
-    ElvUIWrathVersionlabel
-except NameError:
-    ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: None")
-    ElvUIWrathVersionlabel.pack()
-    ElvUIWrathInstall = ttk.Button(
-        text="Install ElvUI To Wrath",
-        width=25,
-        command=lambda : install_elvui_wrath(),
-    )
-    ElvUIWrathInstall.pack(after = ElvUIWrathVersionlabel)
-try:
-    ElvUIWrathVersionlabel.pack()
-except:
-    pass
+    try: 
+        ElvUIClassicVersionlabel
+    except NameError:
+        ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: None")
+        ElvUIClassicVersionlabel.pack()
+        ElvUIClassicInstall = ttk.Button(
+            text="Install ElvUI To Classic",
+            width=25,
+            command=lambda : install_elvui_classic(),
+        )
+        ElvUIClassicInstall.pack(after = ElvUIClassicVersionlabel)
+    try:
+        ElvUIClassicVersionlabel.pack()
+    except:
+        pass
+
+#Wrath
+if WrathFound:
+    try:
+        try:
+            WoWWrathDir
+        except NameError:
+            pass
+        #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
+        ElvUIWrathLocation = WoWWrathDir + '\_classic_\Interface\AddOns\ElvUI\ElvUI_Wrath.toc'
+        ElvUIWrathToC = open(ElvUIWrathLocation, 'r')
+        for line in ElvUIWrathToC:
+            if line.find("Version") != -1:
+               ElvUIWrathToCVersionLine = line
+        ElvUIWrathToC.close()
+        if ElvUIWrathToCVersionLine:
+            ElvUIWrathToCVersionLine = ElvUIWrathToCVersionLine.partition(":")[2]
+            LocalElvUIWrathVersion = "v" + ElvUIWrathToCVersionLine.strip()
+        
+        ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: " + LocalElvUIWrathVersion)
+    except:
+        pass
+    try: 
+        ElvUIWrathVersionlabel
+    except NameError:
+        ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: None")
+        ElvUIWrathVersionlabel.pack()
+        ElvUIWrathInstall = ttk.Button(
+            text="Install ElvUI To Wrath",
+            width=25,
+            command=lambda : install_elvui_wrath(),
+        )
+        ElvUIWrathInstall.pack(after = ElvUIWrathVersionlabel)
+    try:
+        ElvUIWrathVersionlabel.pack()
+    except:
+        pass
 
 
 def run_update():
