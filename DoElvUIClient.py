@@ -1,21 +1,22 @@
-#import subprocess
 import json
 import requests
 import urllib.request
 from zipfile import ZipFile
-#import zipfile
 import tkinter as tk
 from tkinter import ttk
 import os
 import shutil
 import tempfile
-#from bs4 import BeautifulSoup
 import winreg
+import webbrowser
+import markdown
+from tkhtmlview import HTMLScrolledText
 LocalElvUIVersion = None
 remoteElvUIVersion = None
 remoteElvUIURL = None
 LocalElvUIClassicVersion = None
 LocalElvUIWrathVersion = None
+LocalDoElvUIClientVersion = None
 
 try:
     import darkdetect
@@ -347,6 +348,26 @@ def run_update():
         sv_ttk.set_theme(lightdarktheme)
     window.mainloop()
 
+def open_DoElvUIUpdater_url():
+    webbrowser.open("https://github.com/doadin/DoElvUIClient/releases", new=0, autoraise=True)
+
+response = requests.get("https://api.github.com/repos/doadin/DoElvUIClient/tags?per_page=1")
+responce_json = response.text.replace("[","").replace("]","")
+
+data_dict = json.loads(responce_json)
+
+if data_dict["name"]:
+    RemoteDoElvUIClientVersion = data_dict["name"]
+if (LocalDoElvUIClientVersion and RemoteDoElvUIClientVersion) and (LocalDoElvUIClientVersion != RemoteDoElvUIClientVersion):
+    label = ttk.Label(text="There is an Update for DoElvUIUpdater!", font=15, foreground="red")
+    label.pack()
+    button = ttk.Button(
+        text="Open Browser To Release Page",
+        width=30,
+        command=open_DoElvUIUpdater_url,
+    )
+    button.pack()
+
 # LocalElvUIClassicVersion
 # LocalElvUIWrathVersion
 if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIClassicVersion and remoteElvUIVersion) and (LocalElvUIClassicVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion) and remoteElvUIURL:
@@ -355,11 +376,22 @@ if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteEl
     #changelogresponsetext = response.text.replace("[","").replace("]","")
 
     try:
-        s = requests.get("https://api.tukui.org/v1/changelog/elvui")
-        changelogbox.insert('1.0',s.text)
+        #s = requests.get("https://api.tukui.org/v1/changelog/elvui")
+        s = requests.get("https://github.com/tukui-org/ElvUI/raw/development/CHANGELOG.md").text
+        extensions = ['extra', 'smarty']
+        html = markdown.markdown(s, extensions=extensions, output_format='html5')
+        html_text = HTMLScrolledText(window, html=html,width=65, height= 20)
+        html_text.pack(fill="both", expand=True)
+        #html_text.fit_height()
+        #soup = BeautifulSoup(html, "html.parser")
+        #for data in soup(['style', 'script']):
+        #    data.decompose()
+        #changelogbox.insert('1.0',s.text)
+        #changelogbox.pack(expand= 1)
     except:
         text = "Changelog Unavailable"
         changelogbox.insert('1.0',text)
+        changelogbox.pack(expand= 1)
     #soup = BeautifulSoup(s.content, "html.parser")
     #soupdiv = soup.find("div", id='changelog')
     #for data in soupdiv(['style', 'script']):
@@ -370,7 +402,7 @@ if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteEl
     #changelogbox.insert('1.0',' '.join(soupdiv.stripped_strings))
     
 
-    changelogbox.pack(expand= 1)
+    #changelogbox.pack(expand= 1)
 
     button = ttk.Button(
         text="Update",
