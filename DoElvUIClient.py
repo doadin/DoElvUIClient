@@ -75,15 +75,19 @@ responce_json = response.text.replace("[","").replace("]","")
 
 data_dict = json.loads(responce_json)
 
-if data_dict["name"]:
-    remoteElvUIVersion = data_dict["name"]
-if data_dict["zipball_url"]:
-    remoteElvUIURL = data_dict["zipball_url"]
-if data_dict["commit"]["sha"]:
-    remoteElvUISHA = data_dict["commit"]["sha"]
+try:
+    if data_dict["name"]:
+        remoteElvUIVersion = data_dict["name"]
+    if data_dict["zipball_url"]:
+        remoteElvUIURL = data_dict["zipball_url"]
+    if data_dict["commit"]["sha"]:
+        remoteElvUISHA = data_dict["commit"]["sha"]
+    label = ttk.Label(text="Latest ElvUI Vesion: " + remoteElvUIVersion)
+    label.pack()
+except:
+    pass
 
-label = ttk.Label(text="Latest ElvUI Vesion: " + remoteElvUIVersion)
-label.pack()
+
 
 tempdir = tempfile.gettempdir()
 #print(tempdir)
@@ -356,17 +360,20 @@ responce_json = response.text.replace("[","").replace("]","")
 
 data_dict = json.loads(responce_json)
 
-if data_dict["name"]:
-    RemoteDoElvUIClientVersion = data_dict["name"]
-if (LocalDoElvUIClientVersion and RemoteDoElvUIClientVersion) and (LocalDoElvUIClientVersion != RemoteDoElvUIClientVersion):
-    label = ttk.Label(text="There is an Update for DoElvUIUpdater!", font=15, foreground="red")
-    label.pack()
-    button = ttk.Button(
-        text="Open Browser To Release Page",
-        width=30,
-        command=open_DoElvUIUpdater_url,
-    )
-    button.pack()
+try:
+    if data_dict["name"]:
+        RemoteDoElvUIClientVersion = data_dict["name"]
+    if (LocalDoElvUIClientVersion and RemoteDoElvUIClientVersion) and (LocalDoElvUIClientVersion != RemoteDoElvUIClientVersion):
+        label = ttk.Label(text="There is an Update for DoElvUIUpdater!", font=15, foreground="red")
+        label.pack()
+        button = ttk.Button(
+            text="Open Browser To Release Page",
+            width=30,
+            command=open_DoElvUIUpdater_url,
+        )
+        button.pack()
+except:
+    pass
 
 # LocalElvUIClassicVersion
 # LocalElvUIWrathVersion
