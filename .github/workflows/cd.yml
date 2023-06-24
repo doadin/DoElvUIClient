@@ -53,7 +53,7 @@ jobs:
           requests
           darkdetect
           sv-ttk
-          tkhtmlview
+          beautifulsoup4
 
       - name: Find Version
         if: startsWith(github.ref, 'refs/tags/')
