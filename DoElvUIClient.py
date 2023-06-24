@@ -380,6 +380,8 @@ if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteEl
         s = requests.get("https://github.com/tukui-org/ElvUI/raw/development/CHANGELOG.md").text
         extensions = ['extra', 'smarty']
         html = markdown.markdown(s, extensions=extensions, output_format='html5')
+        if lightdarktheme == "dark":
+            html = '<h2 style="background-color:black" font-size: 10px>' + '<li style="color:white">' + html
         html_text = HTMLScrolledText(window, html=html,width=65, height= 20)
         html_text.pack(fill="both", expand=True)
         #html_text.fit_height()
