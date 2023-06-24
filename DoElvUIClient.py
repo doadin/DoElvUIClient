@@ -10,7 +10,7 @@ import tempfile
 import winreg
 import webbrowser
 import markdown
-from tkhtmlview import HTMLScrolledText
+from bs4 import BeautifulSoup
 LocalElvUIVersion = None
 remoteElvUIVersion = None
 remoteElvUIURL = None
@@ -380,16 +380,18 @@ if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteEl
         s = requests.get("https://github.com/tukui-org/ElvUI/raw/development/CHANGELOG.md").text
         extensions = ['extra', 'smarty']
         html = markdown.markdown(s, extensions=extensions, output_format='html5')
-        if lightdarktheme == "dark":
-            html = '<h2 style="background-color:black" font-size: 10px>' + '<li style="color:white">' + html
-        html_text = HTMLScrolledText(window, html=html,width=65, height= 20)
-        html_text.pack(fill="both", expand=True)
+        soup = BeautifulSoup(html, features='html.parser')
+        #if lightdarktheme == "dark":
+        #    html = '<h2 style="background-color:black" font-size: 10px>' + '<li style="color:white">' + html
+        #html_text = HTMLScrolledText(window, html=html,width=65, height= 20)
+        #html_text.pack(fill="both", expand=True)
+        changelogbox.insert('1.0',soup.get_text())
         #html_text.fit_height()
         #soup = BeautifulSoup(html, "html.parser")
         #for data in soup(['style', 'script']):
         #    data.decompose()
         #changelogbox.insert('1.0',s.text)
-        #changelogbox.pack(expand= 1)
+        changelogbox.pack(expand= 1)
     except:
         text = "Changelog Unavailable"
         changelogbox.insert('1.0',text)
