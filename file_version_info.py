@@ -1,6 +1,7 @@
 with open('CDVERSION.tmp', 'r') as cdfile :
   cdfiledata = cdfile.read()
 cdfiledataparsed = cdfiledata.replace('v', '')
+cdfiledataparsed = cdfiledata.replace('v', '').replace('"', '')
 commastring = cdfiledataparsed.replace('.', ',')
 
 f = open("file_version_info.txt", "a")
