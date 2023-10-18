@@ -65,6 +65,7 @@ jobs:
           $CDDoElvUIClientVersion > '${{ github.workspace }}\CDVERSION.tmp'
           Get-Content -Path ${{ github.workspace }}\CDVERSION.tmp | echo
           python ${{ github.workspace }}\CD.py
+          python ${{ github.workspace }}\file_version_info.py
 
       - name: Freeze DoElvUIClient
         if: startsWith(github.ref, 'refs/tags/')
