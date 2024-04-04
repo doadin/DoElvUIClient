@@ -384,21 +384,24 @@ if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteEl
 
     try:
         #s = requests.get("https://api.tukui.org/v1/changelog/elvui")
-        s = requests.get("https://github.com/tukui-org/ElvUI/raw/development/CHANGELOG.md").text
-        extensions = ['extra', 'smarty']
-        html = markdown.markdown(s, extensions=extensions, output_format='html5')
-        soup = BeautifulSoup(html, features='html.parser')
-        #if lightdarktheme == "dark":
-        #    html = '<h2 style="background-color:black" font-size: 10px>' + '<li style="color:white">' + html
-        #html_text = HTMLScrolledText(window, html=html,width=65, height= 20)
-        #html_text.pack(fill="both", expand=True)
-        changelogbox.insert('1.0',soup.get_text())
-        #html_text.fit_height()
-        #soup = BeautifulSoup(html, "html.parser")
-        #for data in soup(['style', 'script']):
-        #    data.decompose()
-        #changelogbox.insert('1.0',s.text)
-        changelogbox.pack(expand= 1)
+        s = requests.get("https://raw.githubusercontent.com/tukui-org/ElvUI/main/CHANGELOG.md").text
+        if s.status_code == 200:
+            extensions = ['extra', 'smarty']
+            html = markdown.markdown(s, extensions=extensions, output_format='html5')
+            soup = BeautifulSoup(html, features='html.parser')
+            #if lightdarktheme == "dark":
+            #    html = '<h2 style="background-color:black" font-size: 10px>' + '<li style="color:white">' + html
+            #html_text = HTMLScrolledText(window, html=html,width=65, height= 20)
+            #html_text.pack(fill="both", expand=True)
+            changelogbox.insert('1.0',soup.get_text())
+            #html_text.fit_height()
+            #soup = BeautifulSoup(html, "html.parser")
+            #for data in soup(['style', 'script']):
+            #    data.decompose()
+            #changelogbox.insert('1.0',s.text)
+            changelogbox.pack(expand= 1)
+        else:
+            raise Exception('404 Changelog Unavailable')
     except:
         text = "Changelog Unavailable"
         changelogbox.insert('1.0',text)
