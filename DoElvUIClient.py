@@ -69,6 +69,8 @@ except:
 
 #result = subprocess.run(['git', 'rev-list', '--tags', '--max-count=1'], stdout=subprocess.PIPE)
 #gitVersion = result.stdout.decode('utf-8')
+opener = urllib.request.URLopener()
+opener.addheader('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36')
 
 response = requests.get("https://api.github.com/repos/tukui-org/ElvUI/tags?per_page=1")
 responce_json = response.text.replace("[","").replace("]","")
@@ -87,6 +89,22 @@ try:
 except:
     pass
 
+responsetukuiOrg = requests.get("https://api.tukui.org/v1/addon/elvui")
+responce_jsontukuiOrg = responsetukuiOrg.text#.replace("[","").replace("]","")
+#print(responce_jsontukuiOrg)
+data_dicttukuiOrg = json.loads(responce_jsontukuiOrg)
+#print(data_dicttukuiOrg)
+
+try:
+    if data_dicttukuiOrg["url"]:
+        remoteElvUIURL = data_dicttukuiOrg["url"]
+        #print(remoteElvUIURL)
+except:
+    pass
+
+print(remoteElvUIURL)
+
+
 
 
 tempdir = tempfile.gettempdir()
@@ -95,7 +113,8 @@ tempdir = tempfile.gettempdir()
 def install_elvui_classic():
     # https://www.tukui.org/downloads/elvui-13.21.zip
 
-    urllib.request.urlretrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+    local_filename, headers = opener.retrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+    print(local_filename, headers)
     #urllib.request.urlretrieve("https://github.com/tukui-org/ElvUI/archive/refs/heads/main.zip", remoteElvUIVersion + ".zip")
     with ZipFile(tempdir + "\\" + remoteElvUIVersion + ".zip", 'r') as zObject:
         zObject.extractall(path = tempdir + "\\" + "DoElvUIUpdater")
@@ -131,7 +150,8 @@ def install_elvui_classic():
 def install_elvui_wrath():
     # https://www.tukui.org/downloads/elvui-13.21.zip
 
-    urllib.request.urlretrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+    local_filename, headers = opener.retrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+    print(local_filename, headers)
     #urllib.request.urlretrieve("https://github.com/tukui-org/ElvUI/archive/refs/heads/main.zip", remoteElvUIVersion + ".zip")
     with ZipFile(tempdir + "\\" + remoteElvUIVersion + ".zip", 'r') as zObject:
         zObject.extractall(path = tempdir + "\\" + "DoElvUIUpdater")
@@ -166,7 +186,8 @@ def install_elvui_wrath():
 def install_elvui_retail():
     # https://www.tukui.org/downloads/elvui-13.21.zip
 
-    urllib.request.urlretrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+    local_filename, headers = opener.retrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+    print(local_filename, headers)
     #urllib.request.urlretrieve("https://github.com/tukui-org/ElvUI/archive/refs/heads/main.zip", remoteElvUIVersion + ".zip")
     with ZipFile(tempdir + "\\" + remoteElvUIVersion + ".zip", 'r') as zObject:
         zObject.extractall(path = tempdir + "\\" + "DoElvUIUpdater")
@@ -214,7 +235,7 @@ if RetailFound:
         ElvUIToC.close()
         if ElvUIToCVersionLine:
             ElvUIToCVersionNumber = ElvUIToCVersionLine.partition(":")[2]
-            LocalElvUIVersion = "v" + ElvUIToCVersionNumber.strip()
+            LocalElvUIVersion = ElvUIToCVersionNumber.strip()
         
         ElvUIRetailVersionlabel = ttk.Label(text="Installed Retail ElvUI Vesion: " + LocalElvUIVersion)
     except Exception as e:
@@ -252,7 +273,7 @@ if ClassicFound:
         ElvUIClassicToC.close()
         if ElvUIClassicToCVersionLine:
             ElvUIClassicToCVersionLine = ElvUIClassicToCVersionLine.partition(":")[2]
-            LocalElvUIClassicVersion = "v" + ElvUIClassicToCVersionLine.strip()
+            LocalElvUIClassicVersion = ElvUIClassicToCVersionLine.strip()
         
         ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIClassicVersion)
     except:
@@ -290,7 +311,7 @@ if WrathFound:
         ElvUIWrathToC.close()
         if ElvUIWrathToCVersionLine:
             ElvUIWrathToCVersionLine = ElvUIWrathToCVersionLine.partition(":")[2]
-            LocalElvUIWrathVersion = "v" + ElvUIWrathToCVersionLine.strip()
+            LocalElvUIWrathVersion = ElvUIWrathToCVersionLine.strip()
         
         ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: " + LocalElvUIWrathVersion)
     except:
@@ -315,25 +336,30 @@ if WrathFound:
 def run_update():
     # https://www.tukui.org/downloads/elvui-13.21.zip
 
-    urllib.request.urlretrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
-    #urllib.request.urlretrieve("https://github.com/tukui-org/ElvUI/archive/refs/heads/main.zip", remoteElvUIVersion + ".zip")
+    try:
+      local_filename, headers = opener.retrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+      print(headers)
+      #urllib.request.urlretrieve("https://github.com/tukui-org/ElvUI/archive/refs/heads/main.zip", remoteElvUIVersion + ".zip")
+    except Exception as e:
+        print(e)
+        pass
     with ZipFile(tempdir + "\\" + remoteElvUIVersion + ".zip", 'r') as zObject:
         zObject.extractall(path = tempdir + "\\" + "DoElvUIUpdater")
     #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
         if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteElvUIVersion):
-            shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
+            shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" , WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
     try:
       if (LocalElvUIClassicVersion and remoteElvUIVersion) and (LocalElvUIClassicVersion != remoteElvUIVersion):
-          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
+          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" , WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
     try:
       if (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion):
-          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWWrathDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
+          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" , WoWWrathDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
     shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
@@ -377,17 +403,18 @@ except:
 
 # LocalElvUIClassicVersion
 # LocalElvUIWrathVersion
-if (LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIClassicVersion and remoteElvUIVersion) and (LocalElvUIClassicVersion != remoteElvUIVersion) and remoteElvUIURL or (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion) and remoteElvUIURL:
+if ((LocalElvUIVersion and remoteElvUIVersion) and (LocalElvUIVersion != remoteElvUIVersion) and remoteElvUIURL) or ((LocalElvUIClassicVersion and remoteElvUIVersion) and (LocalElvUIClassicVersion != remoteElvUIVersion) and remoteElvUIURL) or ((LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion) and remoteElvUIURL):
     changelogbox = tk.Text(window,width=45, height= 20,wrap="word")
     #changelogresponse = requests.get("https://api.github.com/repos/tukui-org/ElvUI/tags?per_page=1")
     #changelogresponsetext = response.text.replace("[","").replace("]","")
 
     try:
         #s = requests.get("https://api.tukui.org/v1/changelog/elvui")
-        s = requests.get("https://raw.githubusercontent.com/tukui-org/ElvUI/main/CHANGELOG.md").text
+        s = requests.get("https://raw.githubusercontent.com/tukui-org/ElvUI/" + remoteElvUIVersion + "/CHANGELOG.md")
+        text = s.text
         if s.status_code == 200:
             extensions = ['extra', 'smarty']
-            html = markdown.markdown(s, extensions=extensions, output_format='html5')
+            html = markdown.markdown(text, extensions=extensions, output_format='html5')
             soup = BeautifulSoup(html, features='html.parser')
             #if lightdarktheme == "dark":
             #    html = '<h2 style="background-color:black" font-size: 10px>' + '<li style="color:white">' + html
