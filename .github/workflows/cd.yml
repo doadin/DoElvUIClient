@@ -24,19 +24,19 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       # Checkout DoElvUIClient source to subdir to enable packaging any tag/commit
       - name: Checkout DoElvUIClient source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.ref }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python}}
           architecture: ${{ matrix.arch }}
@@ -77,7 +77,7 @@ jobs:
         run: |
           makensis /Darch=${{ matrix.arch }} DoElvUIClient-win-installer.nsi
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: startsWith(github.ref, 'refs/tags/')
         with:
           name: DoElvUIClient-py${{ matrix.python }}-${{ matrix.arch }}
@@ -85,7 +85,7 @@ jobs:
               ${{ github.workspace }}/*.exe
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           name: ${{  github.ref_name }}
