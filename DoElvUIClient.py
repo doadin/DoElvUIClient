@@ -46,7 +46,7 @@ access_registry = winreg.ConnectRegistry(None,winreg.HKEY_LOCAL_MACHINE)
 #Uninstall\Wrath of the Lich King Classic + \_classic_\ = Wrath
 RetailFound = True
 ClassicFound = True
-WrathFound = True
+ClassicRotatingFound = True
 
 try:
     access_key = winreg.OpenKey(access_registry, r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\World of Warcraft")
@@ -61,10 +61,10 @@ except:
     ClassicFound = False
     pass
 try:
-    access_key = winreg.OpenKey(access_registry, r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Wrath of the Lich King Classic")
-    WoWWrathDir = winreg.QueryValueEx(access_key, 'InstallLocation')[0]
+    access_key = winreg.OpenKey(access_registry, r"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\Burning Crusade Classic")
+    WoWClassicRotatingDir = winreg.QueryValueEx(access_key, 'InstallLocation')[0]
 except:
-    WrathFound = False
+    ClassicRotatingFound = False
     pass
 
 #result = subprocess.run(['git', 'rev-list', '--tags', '--max-count=1'], stdout=subprocess.PIPE)
@@ -104,9 +104,6 @@ except:
 
 print(remoteElvUIURL)
 
-
-
-
 tempdir = tempfile.gettempdir()
 #print(tempdir)
 
@@ -121,7 +118,45 @@ def install_elvui_classic():
     #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
-        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
+        #shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
+        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\", WoWClassicDir + '\\_classic_era_\\Interface\\AddOns', dirs_exist_ok = True)
+        for widget in window.winfo_children():
+            widget.destroy()
+    
+        greeting = ttk.Label(text="Welcome to the Do ElvUI Updater")
+        greeting.pack()
+    
+        label = ttk.Label(text="Classic Era Install Complete!")
+        label.pack()
+        title = window.title("DoElvUIUpdater")
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
+        window.mainloop()
+        shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
+        os.remove(tempdir + "\\" + remoteElvUIVersion + ".zip")
+        #shutil.copytree("E:\\test\\AddOns\\tukui-org-ElvUI-" + remoteElvUISHA[0:7], "E:\\test", copy_function = shutil.copy)
+    except:
+        for widget in window.winfo_children():
+            widget.destroy()
+        classicinstallerror = ttk.Label(text="Classic Era Install Faiiled! Please report this!")
+        classicinstallerror.pack()
+        if svtheme:
+            sv_ttk.set_theme(lightdarktheme)
+        window.mainloop()
+
+def install_elvui_classic_rotating():
+    # https://www.tukui.org/downloads/elvui-13.21.zip
+
+    local_filename, headers = opener.retrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
+    print(local_filename, headers)
+    #urllib.request.urlretrieve("https://github.com/tukui-org/ElvUI/archive/refs/heads/main.zip", remoteElvUIVersion + ".zip")
+    with ZipFile(tempdir + "\\" + remoteElvUIVersion + ".zip", 'r') as zObject:
+        zObject.extractall(path = tempdir + "\\" + "DoElvUIUpdater")
+    #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
+    #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
+    try:
+        #shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWClassicRotatingDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
+        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\", WoWClassicRotatingDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
         for widget in window.winfo_children():
             widget.destroy()
     
@@ -137,47 +172,11 @@ def install_elvui_classic():
         shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
         os.remove(tempdir + "\\" + remoteElvUIVersion + ".zip")
         #shutil.copytree("E:\\test\\AddOns\\tukui-org-ElvUI-" + remoteElvUISHA[0:7], "E:\\test", copy_function = shutil.copy)
-    except:
+    except Exception as inst:
+        print(inst)
         for widget in window.winfo_children():
             widget.destroy()
-        classicinstallerror = ttk.Label(text="Classic Install Faiiled! Please report this!")
-        classicinstallerror.pack()
-        if svtheme:
-            sv_ttk.set_theme(lightdarktheme)
-        window.mainloop()
-
-
-def install_elvui_wrath():
-    # https://www.tukui.org/downloads/elvui-13.21.zip
-
-    local_filename, headers = opener.retrieve(remoteElvUIURL, tempdir + "\\" + remoteElvUIVersion + ".zip")
-    print(local_filename, headers)
-    #urllib.request.urlretrieve("https://github.com/tukui-org/ElvUI/archive/refs/heads/main.zip", remoteElvUIVersion + ".zip")
-    with ZipFile(tempdir + "\\" + remoteElvUIVersion + ".zip", 'r') as zObject:
-        zObject.extractall(path = tempdir + "\\" + "DoElvUIUpdater")
-    #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
-    #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
-    try:
-        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWWrathDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
-        for widget in window.winfo_children():
-            widget.destroy()
-    
-        greeting = ttk.Label(text="Welcome to the Do ElvUI Updater")
-        greeting.pack()
-    
-        label = ttk.Label(text="Wrath Install Complete!")
-        label.pack()
-        title = window.title("DoElvUIUpdater")
-        if svtheme:
-            sv_ttk.set_theme(lightdarktheme)
-        window.mainloop()
-        shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
-        os.remove(tempdir + "\\" + remoteElvUIVersion + ".zip")
-        #shutil.copytree("E:\\test\\AddOns\\tukui-org-ElvUI-" + remoteElvUISHA[0:7], "E:\\test", copy_function = shutil.copy)
-    except:
-        for widget in window.winfo_children():
-            widget.destroy()
-        wrathinstallerror = ttk.Label(text="Wrath Install Faiiled! Please report this!")
+        wrathinstallerror = ttk.Label(text="Classic Install Faiiled! Please report this!")
         wrathinstallerror.pack()
         if svtheme:
             sv_ttk.set_theme(lightdarktheme)
@@ -194,7 +193,8 @@ def install_elvui_retail():
     #os.rename("E:\\test\\AddOns\\ElvUI-main","E:\\test\\AddOns\\ElvUI")
     #distutils.dir_util.copy_tree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], "C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns")
     try:
-        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
+        #shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" + "tukui-org-ElvUI-" + remoteElvUISHA[0:7], WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
+        shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\", WoWDir + '\\_retail_\\Interface\\AddOns', dirs_exist_ok = True)
         for widget in window.winfo_children():
             widget.destroy()
     
@@ -227,7 +227,7 @@ if RetailFound:
         except NameError:
             pass
         #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
-        ElvUILocation = WoWDir + '\_retail_\Interface\AddOns\ElvUI\ElvUI_Mainline.toc'
+        ElvUILocation = WoWDir + '\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc'
         ElvUIToC = open(ElvUILocation, 'r')
         for line in ElvUIToC:
             if line.find("Version") != -1:
@@ -265,7 +265,7 @@ if ClassicFound:
         except NameError:
             pass
         #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
-        ElvUIClassicLocation = WoWClassicDir + '\_classic_era_\Interface\AddOns\ElvUI\ElvUI_Classic.toc'
+        ElvUIClassicLocation = WoWClassicDir + '\\_classic_era_\\Interface\\AddOns\\ElvUI\\ElvUI_Vanilla.toc'
         ElvUIClassicToC = open(ElvUIClassicLocation, 'r')
         for line in ElvUIClassicToC:
             if line.find("Version") != -1:
@@ -275,14 +275,14 @@ if ClassicFound:
             ElvUIClassicToCVersionLine = ElvUIClassicToCVersionLine.partition(":")[2]
             LocalElvUIClassicVersion = ElvUIClassicToCVersionLine.strip()
         
-        ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIClassicVersion)
+        ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic Era ElvUI Vesion: " + LocalElvUIClassicVersion)
     except:
         pass
     
     try: 
         ElvUIClassicVersionlabel
     except NameError:
-        ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: None")
+        ElvUIClassicVersionlabel = ttk.Label(text="Installed Classic Era ElvUI Vesion: None")
         ElvUIClassicVersionlabel.pack()
         ElvUIClassicInstall = ttk.Button(
             text="Install ElvUI To Classic",
@@ -295,40 +295,40 @@ if ClassicFound:
     except:
         pass
 
-#Wrath
-if WrathFound:
+#Classic Rotating
+if ClassicRotatingFound:
     try:
         try:
-            WoWWrathDir
+            WoWClassicRotatingDir
         except NameError:
             pass
         #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
-        ElvUIWrathLocation = WoWWrathDir + '\_classic_\Interface\AddOns\ElvUI\ElvUI_Wrath.toc'
-        ElvUIWrathToC = open(ElvUIWrathLocation, 'r')
-        for line in ElvUIWrathToC:
+        ElvUIClassicRotatingDirLocation = WoWClassicRotatingDir + '\\_classic_\\Interface\\AddOns\\ElvUI\\ElvUI_Cata.toc'
+        ElvUIRotatingToC = open(ElvUIClassicRotatingDirLocation, 'r')
+        for line in ElvUIRotatingToC:
             if line.find("Version") != -1:
-               ElvUIWrathToCVersionLine = line
-        ElvUIWrathToC.close()
-        if ElvUIWrathToCVersionLine:
-            ElvUIWrathToCVersionLine = ElvUIWrathToCVersionLine.partition(":")[2]
-            LocalElvUIWrathVersion = ElvUIWrathToCVersionLine.strip()
+               ElvUIRotatingToCVersionLine = line
+        ElvUIRotatingToC.close()
+        if ElvUIRotatingToCVersionLine:
+            ElvUIRotatingToCVersionLine = ElvUIRotatingToCVersionLine.partition(":")[2]
+            LocalElvUIRotatingVersion = ElvUIRotatingToCVersionLine.strip()
         
-        ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: " + LocalElvUIWrathVersion)
+        ElvUIRotatingVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIRotatingVersion)
     except:
         pass
     try: 
-        ElvUIWrathVersionlabel
+        ElvUIRotatingVersionlabel
     except NameError:
-        ElvUIWrathVersionlabel = ttk.Label(text="Installed Wrath ElvUI Vesion: None")
-        ElvUIWrathVersionlabel.pack()
-        ElvUIWrathInstall = ttk.Button(
-            text="Install ElvUI To Wrath",
+        ElvUIRotatingVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: None")
+        ElvUIRotatingVersionlabel.pack()
+        ElvUIRotatingInstall = ttk.Button(
+            text="Install ElvUI To Classic",
             width=25,
-            command=lambda : install_elvui_wrath(),
+            command=lambda : install_elvui_classic_rotating(),
         )
-        ElvUIWrathInstall.pack(after = ElvUIWrathVersionlabel)
+        ElvUIRotatingInstall.pack(after = ElvUIRotatingVersionlabel)
     try:
-        ElvUIWrathVersionlabel.pack()
+        ElvUIRotatingVersionlabel.pack()
     except:
         pass
 
@@ -359,7 +359,7 @@ def run_update():
         pass
     try:
       if (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion):
-          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" , WoWWrathDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
+          shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" , WoWClassicRotatingDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
     shutil.rmtree(tempdir + "\\" + "DoElvUIUpdater")
