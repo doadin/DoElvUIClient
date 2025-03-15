@@ -221,6 +221,7 @@ def install_elvui_retail():
 
 #Retail
 if RetailFound:
+    print("RetailFound")
     try:
         try:
             WoWDir
@@ -228,7 +229,7 @@ if RetailFound:
             pass
         #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
         ElvUILocation = WoWDir + '\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc'
-        ElvUIToC = open(ElvUILocation, 'r')
+        ElvUIToC = open(ElvUILocation, 'r', encoding="utf-8")
         for line in ElvUIToC:
             if line.find("Version") != -1:
                ElvUIToCVersionLine = line
@@ -259,6 +260,7 @@ if RetailFound:
 
 #Classic
 if ClassicFound:
+    print("ClassicFound")
     try:
         try:
             WoWClassicDir
@@ -266,7 +268,7 @@ if ClassicFound:
             pass
         #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
         ElvUIClassicLocation = WoWClassicDir + '\\_classic_era_\\Interface\\AddOns\\ElvUI\\ElvUI_Vanilla.toc'
-        ElvUIClassicToC = open(ElvUIClassicLocation, 'r')
+        ElvUIClassicToC = open(ElvUIClassicLocation, 'r', encoding="utf-8")
         for line in ElvUIClassicToC:
             if line.find("Version") != -1:
                ElvUIClassicToCVersionLine = line
@@ -297,6 +299,7 @@ if ClassicFound:
 
 #Classic Rotating
 if ClassicRotatingFound:
+    print("ClassicRotatingFound")
     try:
         try:
             WoWClassicRotatingDir
@@ -304,7 +307,7 @@ if ClassicRotatingFound:
             pass
         #ElvUIToC = open('C:\\Program Files (x86)\\World of Warcraft\\_retail_\\Interface\\AddOns\\ElvUI\\ElvUI_Mainline.toc', 'r')
         ElvUIClassicRotatingDirLocation = WoWClassicRotatingDir + '\\_classic_\\Interface\\AddOns\\ElvUI\\ElvUI_Cata.toc'
-        ElvUIRotatingToC = open(ElvUIClassicRotatingDirLocation, 'r')
+        ElvUIRotatingToC = open(ElvUIClassicRotatingDirLocation, 'r', encoding="utf-8")
         for line in ElvUIRotatingToC:
             if line.find("Version") != -1:
                ElvUIRotatingToCVersionLine = line
