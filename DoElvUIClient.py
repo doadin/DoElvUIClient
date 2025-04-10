@@ -316,16 +316,16 @@ if ClassicRotatingFound:
             ElvUIRotatingToCVersionLine = ElvUIRotatingToCVersionLine.partition(":")[2]
             LocalElvUIRotatingVersion = ElvUIRotatingToCVersionLine.strip()
         
-        ElvUIRotatingVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: " + LocalElvUIRotatingVersion)
+        ElvUIRotatingVersionlabel = ttk.Label(text="Installed Classic Cata ElvUI Vesion: " + LocalElvUIRotatingVersion)
     except:
         pass
     try: 
         ElvUIRotatingVersionlabel
     except NameError:
-        ElvUIRotatingVersionlabel = ttk.Label(text="Installed Classic ElvUI Vesion: None")
+        ElvUIRotatingVersionlabel = ttk.Label(text="Installed Classic Cata ElvUI Vesion: None")
         ElvUIRotatingVersionlabel.pack()
         ElvUIRotatingInstall = ttk.Button(
-            text="Install ElvUI To Classic",
+            text="Install ElvUI To Classic Cata",
             width=25,
             command=lambda : install_elvui_classic_rotating(),
         )
@@ -361,7 +361,7 @@ def run_update():
     except:
         pass
     try:
-      if (LocalElvUIWrathVersion and remoteElvUIVersion) and (LocalElvUIWrathVersion != remoteElvUIVersion):
+      if (LocalElvUIRotatingVersion and remoteElvUIVersion) and (LocalElvUIRotatingVersion != remoteElvUIVersion):
           shutil.copytree(tempdir + "\\" + "DoElvUIUpdater" + "\\" , WoWClassicRotatingDir + '\\_classic_\\Interface\\AddOns', dirs_exist_ok = True)
     except:
         pass
